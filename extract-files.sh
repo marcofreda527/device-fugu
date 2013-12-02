@@ -61,7 +61,7 @@ echo PROPRIETARY_DEVICE_DIR=$PROPRIETARY_DEVICE_DIR
 mkdir -p $PROPRIETARY_DEVICE_DIR
 PROPRIETARY_BLOBS_LIST=$PROPRIETARY_DEVICE_DIR/vendor-blobs.mk
 
-for NAME in audio hw wifi etc egl etc lib bin usr scripts system/lib system/bin
+for NAME in audio hw wifi etc egl etc lib bin xbin usr scripts system/lib system/bin
 do
     mkdir -p $PROPRIETARY_DEVICE_DIR/$NAME
 done
@@ -197,7 +197,6 @@ COMMON_ETC="
 	media_codecs.xml
 	tiny_hw.xml
 	adb.iso
-	vold.fstab
 	"
 copy_files "$COMMON_ETC" "system/etc" "etc"
 
@@ -214,8 +213,42 @@ COMMON_BINS="
 	vhub
 	mplayer
 	bluetoothd
+	calibration_init
+	cpu
+	engappclient
+	enghardwaretest
+	engmoded
+	engmodemclient
+	engpcclient
+	engservice
+	engsetmacaddr
+	gsnap
+	lookat
+	mcom_monitor
+	nvitemd
+	slog
+	slogctl
+	tar
+	tcp
+	vlog-iq
+	vlog-sv
+	wl
 	"
 copy_files "$COMMON_BINS" "system/bin" "bin"
+
+XBINS="
+	bonnie
+	busybox
+	copybw
+	gsnap.save_anr_tombstones.sh
+	iperf
+	logs4android.sh
+	logs4modem.sh
+	memverify
+	utest_spipe
+	zram.sh
+	"
+copy_files "$XBINS" "system/xbin" "xbin"
 
 COMMON_LIBS="
 	libMali.so
@@ -228,6 +261,16 @@ COMMON_LIBS="
 	libomx_m4vh263dec_hw_sprd.so
 	libreference-ril_sp.so
 	libstagefright_sprd_soft_mpeg4dec.so
+	libUMP.so
+	libaudioutils.so
+	libeng_wifi_ptest.so
+	libengclient.so
+	libjniNtvDev.so
+	libmbbms_tel_jni.so
+	libmorpho_facesolid.so
+	libstagefrighthw.so
+	libvbeffect.so
+	libvbpga.so
 	"
 copy_files "$COMMON_LIBS" "system/lib" "lib"
 
@@ -252,5 +295,4 @@ SYSTEM_IDC="
 	ft5x0x_ts.idc
 	"
 copy_files "$SYSTEM_IDC" "system/usr/idc" "usr"
-
 
