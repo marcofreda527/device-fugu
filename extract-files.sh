@@ -24,32 +24,18 @@ if [[ -z "${ANDROIDFS_DIR}" && -d ../../../backup-${DEVICE}/system ]]; then
     ANDROIDFS_DIR=../../../backup-${DEVICE}
 fi
 
+if [[ ! -d ../../../backup-${DEVICE}/system  && -z "${ANDROIDFS_DIR}" ]]; then
+    echo Backing up system partition to backup-${DEVICE}
+    mkdir -p ../../../backup-${DEVICE} &&
+    adb pull /system ../../../backup-${DEVICE}/system
+fi
+
 if [[ -z "${ANDROIDFS_DIR}" ]]; then
     echo Pulling files from device
     DEVICE_BUILD_ID=`adb shell cat /system/build.prop | grep ro.build.display.id | sed -e 's/ro.build.display.id=//' | tr -d '\n\r'`
 else
     echo Pulling files from ${ANDROIDFS_DIR}
     DEVICE_BUILD_ID=`cat ${ANDROIDFS_DIR}/system/build.prop | grep ro.build.display.id | sed -e 's/ro.build.display.id=//' | tr -d '\n\r'`
-fi
-
-case "$DEVICE_BUILD_ID" in
-sp7710ga*)
-  FIRMWARE=ICS
-  echo Found ICS firmware with build ID $DEVICE_BUILD_ID >&2
-  ;;
-*)
-  FIRMWARE=unknown
-  echo Found unknown firmware with build ID $DEVICE_BUILD_ID >&2
-  echo Please download a compatible backup-${DEVICE} directory.
-  echo Check the ${DEVICE} intranet page for information on how to get one.
-  exit -1
-  ;;
-esac
-
-if [[ ! -d ../../../backup-${DEVICE}/system  && -z "${ANDROIDFS_DIR}" ]]; then
-    echo Backing up system partition to backup-${DEVICE}
-    mkdir -p ../../../backup-${DEVICE} &&
-    adb pull /system ../../../backup-${DEVICE}/system
 fi
 
 BASE_PROPRIETARY_DEVICE_DIR=vendor/$MANUFACTURER/proprietories/$SOC
